@@ -61,6 +61,8 @@ def check_winner(game: dict) -> str | None:
         game["status"] = "finished"
         return field[0][2]
 
+    return None
+
 
 @app.post("/game/{game_id}/move/")
 async def make_move(game_id: int, move: schemas.Move):
