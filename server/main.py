@@ -46,7 +46,10 @@ def check_winner(game: dict) -> str | None:
             return row[0]
 
     for col in range(3):
-        if field[0][col] == field[1][col] == field[2][col] and field[0][col] is not None:
+        if (
+            field[0][col] == field[1][col] == field[2][col]
+            and field[0][col] is not None
+        ):
             game["status"] = "finished"
             return field[0][col]
 
@@ -91,4 +94,5 @@ async def make_move(game_id: int, move: schemas.Move):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run('main:app', host="0.0.0.0", port=8000, reload=True)
+
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

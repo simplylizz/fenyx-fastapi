@@ -42,6 +42,6 @@ def get_game(id: int) -> dict | None:
 
 def update_game(id: int, data: dict):
     if id not in _GAMES_STORAGE:
-        raise ValueError(f'No game with id {id}')
+        raise ValueError(f"No game with id {id}")
 
     _GAMES_STORAGE[id] = data
