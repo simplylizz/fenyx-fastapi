@@ -1,0 +1,166 @@
+##########################
+Notes!
+All about Docker
+##########################
+docker helps us make front-end back-end and database
+building running and shipping applications in a consistent manner.
+solves a problem with an app working in a machine but not in another machine
+    -files missing
+    -software version mismatch
+    -different configuration settings(environment settings).
+
+Docker solves this!
+
+package application ----- then run it anywhere with machine with docker
+
+its isolated environment allows multiple applications use 
+different versions of some software side by side in the same machine
+
+#compose down --rmi all #remove an environment with all dependencies
+
+Container : an isolated environment for running an application.
+    -gives the same isolation of a virtual machine.
+    -more lightweight (they do not need a full OS)
+    -use the OS of the host (one licensed patched and monitored OS of the host is enough ) (they share the
+    kernel of the OS(kernal:core of OS that manages applications and hardware resources))
+    -faster than VM
+    -needs less hardware resources (CPU,memory and disc-space).
+    - in a single host we can run thousands of containers side by side.
+
+
+virtual machine : an abstraction of a machine or(physical hardware).
+    -you can have sevral virtual machines on a physical machine.
+    -using a tool called hypervisor(HV): we can for example run windows 
+    and linux on a MACBOOK laptop. 
+    -hypervisor(HV): used to create and manage virtual machine.
+        -virtual box (windows-mac ios-linux)
+        -VMware (windows-mac ios-linux)
+        -Hyper-v (windows)
+
+-Problems with VM:
+    -each VM needs a licensed patched and monitored OS. 
+    -Slow to start
+    -resource intensive (each VM takes part of the hardware resources (CPU,memory and disc-space) )
+
+
+-The architecture of Docker
+                                        End point(router)
+###########         REST API              ######################
+client       ---------------------------->  server(docker engine)
+##########                                #######################
+
+
+
+
+####################################################
+Docker: software used to create and manage containers
+#####################################################
+
+* Dockerizing applications making a small change to an application so it can be run by Docker(we add a docker file to it)
+-dockerfile: a plain text file that includes instructions that docker uses to package the application into an image.
+this image contains:
+    - a cut down operation system (OS)
+    - a runtime environment (Node, python)
+    - application files
+    -third-party libraries
+    -environment variables
+    
+Then we till docker to start a container based on the image and we put the image(application) in the container
+then we till docker to run the application inside the container in isolated environment
+
+
+If we wanna docker an application (build , run and ship)
+without docker if you want to ship an application to a different computer you must install node in the reciepent computer
+
+
+##############################
+in docker we write instructions for packaging our file
+    -start with base image then add additional files to it (like inhertance in OOP)  #hub.docker.com search for nodes
+    -choose node image type based on size of image (alpine very small)
+
+
+#FROM all capital #make base image that we are going to build up 
+FROM node:alpine         
+
+#copy our applciation files (copy all application files into the directory called app in the base image)
+COPY . /app 
+
+#workdir 
+WORKDIR /app
+
+#CMD command means execute the command
+CMD node app.js
+
+#now move to terminal and till docker to package your application: (docker build -t docker-tutorial .) 
+#TO SHOW ALL IMAGES (docker images or docker image ls)
+#run the image using (docker run docker-tutorial )
+#publish or ship docker (docker ) 
+    -login to docker acount(docker login)
+    -change name of reposittory so that it includes username : docker tag docker-tutorial abdulrhman14357/docker-tutorial
+    -push : docker push abdulrhman14357/docker-tutorial
+    -pull from play-with-docker.com : docker pull abdulrhman14357/docker-tutorial 
+
+
+##############################################
+##############################################
+linux distributions: 
+    -ubuntu
+    -debian
+    -alpine: what we are going to use
+    -fedora
+    -.....etc 
+
+# docker run ubuntu: tries to find docker image if not exists it pulls it.
+# docker ps : list of rrunning processes or containers running
+# docker ps -a : list of all running and stop containers. 
+ 
+
+ ############################################
+ linux : some commands
+ ############################################
+
+#to run an image or container with the  interactive mode : docker rub -it ubuntu
+    - # highest privilages (root user)
+    - $ less privilages (normal user)
+    - echo hello ===== print('hello')
+    - whoami ======= who am I = user or root
+    - echo $0 ==== location of the program
+    - history ===== all comands executed so far.
+    - !1 ===== execute command 1 in history 
+    - apt ========= advanced package tool (like pip) :example: apt install nano (nano is a text editor)
+       - before installing packages run apt update
+    - clear screan with ctrl+l
+    -pwd = print working directory 
+    -ls = list of files in the working directory  try ( ls -1  , ls -l)
+    -cd = change working directory
+    -cd .. = one file back
+    -cd ../..   = two files back
+    -ls /bin 
+    -cd ~ == cd /home    == brings us to home directory
+    ##########
+    -mkdir "name of the directory"   = make a directory
+    -blue = directory 
+    -mv = move or rename "directory or files"  (mv test docker) change the name of test to docker
+    -make a file : touch   (touch hello.txt)
+    -move file :  mv hello.txt /etc
+    - ctrl + W removes a word while typing
+    -rm   ==  used to remove files (rm file* (remove all files that starts with file))
+    -to remove a directory (must be a recursive remove): rm -r "directory name"
+    ################
+    -add a file with nano text editor (apt update ----------> apt install nano ------->nano "file name") edit it  
+    - see content of a file with (cat "file name")
+    - you can also see long files in pages format with (more "file name or directory")  ---- you can also use less to replace more
+    -(head -n 5 "file name or categpry")
+    -(tail -n 5 "file name or categpry")
+    ################################################
+    redirection(>)= copy content of a file into a new file(if the destination file exists already then it doesnt create a new file)
+        - cat file2.txt > file3.txt 
+        -concatination and redirection:
+            -# (cat file1.txt file2.txt file3.txt > combined_file.txt)
+        -echo love you god > muslim.txt
+
+
+
+
+
+

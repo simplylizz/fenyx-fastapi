@@ -1,10 +1,10 @@
 FROM python:3.11-slim
-
-COPY ./server/requirements.txt /requirements.txt
+#copy requirements files of server and client to the based image directory with new names
+COPY ./server/requirements.txt /server-requirements.txt
 COPY ./client/requirements.txt /client-requirements.txt
 RUN pip install \
     --no-cache-dir \
-    -r /requirements.txt \
+    -r /server-requirements.txt \
     -r /client-requirements.txt
 
 COPY . /app
