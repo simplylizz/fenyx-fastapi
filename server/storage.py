@@ -5,8 +5,8 @@ import uuid
 _GAMES_STORAGE = {
     1: {
         "id": 1,
-        "player_id_1": "1",
-        "player_id_2": "2",
+        "player_id_1": "",
+        "player_id_2": "",
         "status": "new",
         "current_move": "x",
         "field": [
@@ -58,3 +58,22 @@ def update_game(id: int, data: dict):
         raise ValueError(f"No game with id {id}")
 
     _GAMES_STORAGE[id] = data
+
+
+def join_existing_games(game_id):
+    if game_id not in _GAMES_STORAGE:
+        raise ValueError(
+            f"No game with id {game_id} ")
+    elif (player_id_1 != "" and player_id_2 != ""):
+        raise ValueError(f"game with id {game_id}  is full")
+
+    else:
+        print("you can join this game ")
+        if player_id_1:
+            player_id_2 = input("pleaser enter the id")
+            _GAMES_STORAGE[player_id_2]
+        elif player_id_2:
+            player_id_2 = input("pleaser enter the id")
+            _GAMES_STORAGE[player_id_2]
+        else:
+            pass

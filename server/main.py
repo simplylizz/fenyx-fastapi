@@ -15,6 +15,11 @@ async def list_games():
     }
 
 
+@app.post("/register-as-a-player/")
+async def register_as_a_player(player_id: str):
+    return storage.register_player(player_id)
+
+
 @app.post("/create-game/")
 async def create_game():
     return storage.create_game()
@@ -73,6 +78,14 @@ async def make_move(game_id: int, move: schemas.Move):
 
     if game["status"] != "new":
         raise HTTPException(status_code=400, detail="Game is not new")
+
+    if game["player_id_1"] == "":
+        raise HTTPException(
+            status_code=400, detail="player_1 id has not been entered")
+
+    if game["player_id_1"] != "":
+        raise HTTPException(
+            status_code=400, detail="player_2 id has not been entered")
 
     if game["field"][move.row][move.col] is not None:
         raise HTTPException(status_code=400, detail="Cell is not empty")
