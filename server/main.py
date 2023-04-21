@@ -20,7 +20,7 @@ async def register_as_a_player(player_id_1: str, player_id_2: str):
     return storage.register_player(player_id_1, player_id_2)
 
 
-@app.update("/update-existing-users/{game_id}")
+@app.put("/update-existing-users/{game_id}")
 async def update_existing_users(game_id: int):
     return storage.update_existing_users(game_id)
 
@@ -76,7 +76,7 @@ def check_winner(game: dict) -> str | None:
         return "x&o"
 
 
-@app.update("/update-existing-score/{id}")
+@app.put("/update-existing-score/{id}")
 def update_existing_score(id: int):
     game = storage.get_game(id)
     if check_winner == "x":
@@ -98,7 +98,7 @@ async def show_scores():
     return storage.show_scores()
 
 
-@app.update("/update-existing-users/{game_id}")
+@app.put("/update-existing-users/{game_id}")
 async def update_existing_users(game_id: int):
     return storage.update_existing_users(game_id)
 

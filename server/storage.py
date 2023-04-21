@@ -43,13 +43,16 @@ def show_scores():
 
                 if score_list[n] == id.player_score_1:
                     last_list.append({id.player_score_1: score_list[n]})
-                    return {id.player_score_1: score_list[n]}
+                    print({id.player_score_1: score_list[n]})
 
                 elif score_list[n] == id.player_score_2:
-                    return {id.player_score_2: score_list[n]}
+                    last_list.append({id.player_score_1: score_list[n]})
+
+                    print({id.player_score_2: score_list[n]})
                 else:
                     pass
                 n += 1
+            return last_list.json.dumps()
 
 
 def get_games():
