@@ -16,8 +16,13 @@ async def list_games():
 
 
 @app.post("/register-as-a-player/")
-async def register_as_a_player(player_id: str):
-    return storage.register_player(player_id)
+async def register_as_a_player(player_id_1: str, player_id_2: str):
+    return storage.register_player(player_id_1, player_id_2)
+
+
+@app.update("/update-existing-users/{game_id}")
+async def update_existing_users(game_id: int):
+    return storage.update_existing_users(game_id)
 
 
 @app.post("/create-game/")
@@ -62,11 +67,43 @@ def check_winner(game: dict) -> str | None:
         game["status"] = "finished"
         return field[0][0]
 
-    if field[0][2] == field[1][1] == field[2][0] and field[0][2] is not None:
+    elif field[0][2] == field[1][1] == field[2][0] and field[0][2] is not None:
         game["status"] = "finished"
         return field[0][2]
 
-    return None
+    else:
+        game["status"] = "DRAW"
+        return "x&o"
+
+
+@app.update("/update-existing-score/{id}")
+def update_existing_score(id: int):
+    game = storage.get_game(id)
+    if check_winner == "x":
+        game['player_score_1'] += 1
+
+    elif check_winner == "o":
+        game['player_score_2'] += 1
+
+    elif check_winner == "x&o":
+        game['player_score_1'] += 0.5
+        game['player_score_2'] += 0.5
+
+    else:
+        pass
+
+
+@app.post('/show-scores/')
+async def show_scores():
+    return storage.show_scores()
+
+
+@app.update("/update-existing-users/{game_id}")
+async def update_existing_users(game_id: int):
+    return storage.update_existing_users(game_id)
+
+
+# no need to mention player id to make a move we will use this function to check if the player id is entered
 
 
 @app.post("/game/{game_id}/move/")
@@ -83,7 +120,7 @@ async def make_move(game_id: int, move: schemas.Move):
         raise HTTPException(
             status_code=400, detail="player_1 id has not been entered")
 
-    if game["player_id_1"] != "":
+    if game["player_id_2"] != "":
         raise HTTPException(
             status_code=400, detail="player_2 id has not been entered")
 
