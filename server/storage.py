@@ -14,9 +14,9 @@ _GAMES_STORAGE = {
         "player_score_1": 0,
         "player_score_2": 0,
         "field": [
-            [None, None, None],
-            [None, None, None],
-            [None, None, None],
+            ["", "", ""],
+            ["", "", ""],
+            ["", "", ""],
         ],
     },
 }
@@ -31,49 +31,25 @@ def register_player():
  #   return _GAMES_STORAGE[player_id]
 
 
-def show_scores():
-    score_list = []
-    last_list = []
-    for id in _GAMES_STORAGE:
-        for id.player_score_1 in _GAMES_STORAGE and id.player_score_2 in _GAMES_STORAGE:
-            score_list.append(id.player_score_1, id.player_score_2)
-            score_list.sort(reverse=True)
-            n = 0
-            for n in range(len(score_list)):
-
-                if score_list[n] == id.player_score_1:
-                    last_list.append({id.player_score_1: score_list[n]})
-                    print({id.player_score_1: score_list[n]})
-
-                elif score_list[n] == id.player_score_2:
-                    last_list.append({id.player_score_1: score_list[n]})
-
-                    print({id.player_score_2: score_list[n]})
-                else:
-                    pass
-                n += 1
-            return last_list.json.dumps()
-
-
 def get_games():
     return list(_GAMES_STORAGE.values())
 
 
-def create_game():
-    id_ = len(_GAMES_STORAGE) + 1
+# def create_game():
+#     id_ = len(_GAMES_STORAGE) + 1
 
-    _GAMES_STORAGE[id_, player_id_1, player_id_2] = {
-        "id": id_,
-        "player_id_1": player_id_1,
-        "player_id_2": player_id_2,
-        "status": "new",
-        "current_move": "x",
-        "field": [
-            [None, None, None],
-            [None, None, None],
-            [None, None, None],
-        ],
-    }
+#     _GAMES_STORAGE[id_, player_id_1, player_id_2] = {
+#         "id": id_,
+#         "player_id_1": player_id_1,
+#         "player_id_2": player_id_2,
+#         "status": "new",
+#         "current_move": "x",
+#         "field": [
+#             [None, None, None],
+#             [None, None, None],
+#             [None, None, None],
+#         ],
+#     }
 
     return _GAMES_STORAGE[id_, player_id_1, player_id_2]
 

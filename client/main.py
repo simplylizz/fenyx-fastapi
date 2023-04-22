@@ -1,16 +1,11 @@
 import argparse
 import json
+import uvicorn
+
 
 import requests
 
-BASE_URL = "http://127.0.0.1:8000"
-
-
-def check_response(response) -> bool:
-    if response.status_code >= 400:
-        print(f"Got response {response.status_code}: {response.text}")
-        return False
-    return True
+BASE_URL = "http://localhost:8000/"
 
 
 def check_response(response) -> bool:
@@ -83,7 +78,7 @@ def create_game():
 
 
 def create_game():
-    response = requests.post(f"http://{BASE_URL}/register-as -a-player/")
+    response = requests.post(f"http://{BASE_URL}/register-as-a-player/")
     if not check_response(response):
         return
     print(response.json())

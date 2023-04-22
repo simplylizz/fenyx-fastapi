@@ -13,4 +13,4 @@ WORKDIR /app
 WORKDIR /app/server
 #ENTRYPOINT ["uvicorn", "main:app", "--reload"]
 ENTRYPOINT ["python3", "main.py"]
-CMD node main.py
+# CMD node main.py
