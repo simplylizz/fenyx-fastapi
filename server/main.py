@@ -69,13 +69,13 @@ def get_game(game_id: int):
         status_code=404, detail=f"no game with  id {game_id} ")
 
 
-class update_items(BaseModel):
+class update_item(BaseModel):
     player_id_1: Optional[str] = None
     player_id_2: Optional[str] = None
 
 
 @app.put("/update-existing-users/{game_id}")
-def update_existing_users(game_id: int, update_item: update_items):
+def update_existing_users(game_id: int, update_item: update_item):
 
     if game_id not in _GAMES_STORAGE:
         raise ValueError(f"No game with game_id {game_id}")
