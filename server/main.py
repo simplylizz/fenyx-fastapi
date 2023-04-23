@@ -5,6 +5,7 @@ from typing import Optional
 from pydantic import BaseModel
 import storage
 import schemas
+import json
 
 
 app = FastAPI()
@@ -46,7 +47,7 @@ class new_games(BaseModel):
         ["", "", ""],
         ["", "", ""],
         ["", "", ""],
-    ]
+    ],
 
 
 @app.post('/create-item/{game_id}')
@@ -72,6 +73,11 @@ def get_game(game_id: int):
 class update_item(BaseModel):
     player_id_1: Optional[str] = None
     player_id_2: Optional[str] = None
+
+
+@app.get('/get-games-list')
+def get_games_list():
+    return list(_GAMES_STORAGE.values())
 
 
 @app.put("/update-existing-users/{game_id}")
@@ -138,29 +144,78 @@ def check_winner(game_id, game: dict) -> str | None:
         game.status = "Ongoing"
 
 
-@app.get('show-scores')
-def show_scores():
-    score_list = []
-    last_list = []
+def list_identity():
+    list_id = []
     for game_id in _GAMES_STORAGE:
-        for game_id.player_score_1 in _GAMES_STORAGE and game_id.player_score_2 in _GAMES_STORAGE:
-            score_list.append(game_id.player_score_1, game_id.player_score_2)
-            score_list.sort(reverse=True)
-            n = 0
-            for n in range(len(score_list)):
+        list_id.append(game_id)
+    return list_id
 
-                if score_list[n] == game_id.player_score_1:
-                    last_list.append({game_id.player_score_1: score_list[n]})
-                    print({game_id.player_score_1: score_list[n]})
 
-                elif score_list[n] == game_id.player_score_2:
-                    last_list.append({game_id.player_score_1: score_list[n]})
+@app.get('/show-scores/')
+def show_scores():
+    listimiz_1 = []
+    listimiz_2 = []
+    games = list(_GAMES_STORAGE.values())
+    # for key and value in games:
+    for game in games:
+        # json.loads take a string as input and returns a dictionary as output.
+        # json.dumps take a dictionary as input and returns a string as output.
+        game = json.dumps(game)
+        game = json.loads(game)
+        # listimiz_1.append(game)
+        print(game)
 
-                    print({game_id.player_score_2: score_list[n]})
-                else:
-                    pass
-                n += 1
-            return last_list.json.dumps()
+        for key, value in game.items():
+            if key == "player_score_1":
+                listimiz_1.append(value)
+            elif key == "player_score_2":
+                listimiz_2.append(value)
+    sum_1 = sum(listimiz_1)
+    sum_2 = sum(listimiz_2)
+    print(listimiz_1)
+    print("\n")
+    print(listimiz_2)
+    return {"The total score of player A": sum_1, "The total score of player B": sum_2}
+
+    #     listimiz_1.append(game.player_score_1)
+    #     listimiz_2.append(game.player_score_2)
+    # sum_1 = 0
+    # sum_2 = 0
+    # for value_1 in listimiz_1:
+    #     sum_1 += value_1
+    # for value_2 in listimiz_2:
+    #     sum_2 += value_2
+    # return {"The total score of player A": sum_1, "The total score of player B": sum_2}
+    #         listimiz_1.append(game["player_score_1"])
+    #         toplam_score_1 = sum(listimiz_1)
+    #     elif game["player_id_2"] == "B":
+    #         listimiz_2.append(game["player_score_2"])
+    #         toplam_score_2 = sum(listimiz_2)
+    #
+
+    # score_list = []
+    # last_list = []
+    # for game_id in _GAMES_STORAGE:
+    #     for game_id.player_score_1 in _GAMES_STORAGE and game_id.player_score_2 in _GAMES_STORAGE:
+    #         score_list.append(game_id.player_score_1)
+    #         score_list.append(game_id.player_score_2)
+    #         score_list.sort(reverse=True)
+    #         n = 0
+
+    #         for n in range(len(score_list)):
+
+    #             if score_list[n] == game_id.player_score_1:
+    #                 last_list.append({game_id.player_score_1: score_list[n]})
+    #                 print({game_id.player_score_1: score_list[n]})
+
+    #             elif score_list[n] == game_id.player_score_2:
+    #                 last_list.append({game_id.player_score_1: score_list[n]})
+
+    #                 print({game_id.player_score_2: score_list[n]})
+    #             else:
+    #                 pass
+    #             n += 1
+    #         return last_list.json.dumps()
 
 
 def update_existing_score(game_id: int):
@@ -188,32 +243,6 @@ def update_game(game_id: int, data: dict):
             f"No game with id {game_id}")
 
     _GAMES_STORAGE[game_id] = data
-
-
-@app.post('/show-scores/')
-async def show_scores():
-    return storage.show_scores()
-
-
-class update_items(BaseModel):
-    player_id_1: Optional[str] = None
-    player_id_2: Optional[str] = None
-
-
-# @app.put("/update-existing-users/{game_id}")
-# def update_existing_users(game_id: int, update_items: update_items):
-
-#     if id not in _GAMES_STORAGE:
-#         raise ValueError(f"No game with id {game_id}")
-#     elif (_GAMES_STORAGE[game_id].player_game_id_1 != "" and _GAMES_STORAGE[game_id].player_game_id_2 != ""):
-#         raise ValueError(f"game with game_id {game_id}  is full")
-
-#     else:
-#         if update_items.player_game_id_1 != None:
-#             _GAMES_STORAGE[game_id].player_game_id_1 = update_items.player_game_id_1
-#         if update_items.player_game_id_2 != None:
-#             _GAMES_STORAGE[game_id].player_game_id_2 = update_items.player_id_2
-#         return _GAMES_STORAGE[game_id]
 
 
 # no need to mention player id to make a move we will use this function to check if the player id is entered

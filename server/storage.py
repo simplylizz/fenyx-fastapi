@@ -32,7 +32,7 @@ def register_player():
 
 
 def get_games():
-    return list(_GAMES_STORAGE.values())
+    return list(_GAMES_STORAGE.values)
 
 
 # def create_game():
@@ -61,28 +61,8 @@ def get_game(id: int) -> dict | None:
 # player_id_1 and player_id_2 always exist and they are always part of _games_storage
 
 
-def update_game(id: int, data: dict):
-    if id in _GAMES_STORAGE:
-        raise ValueError(f"No game with id {id}")
+# def update_game(id: int, data: dict):
+#     if id in _GAMES_STORAGE:
+#         raise ValueError(f"No game with id {id}")
 
-    _GAMES_STORAGE[id] = data
-
-
-class update_items(BaseModel):
-    player_id_1: Optional[str] = None
-    player_id_2: Optional[str] = None
-
-
-def update_existing_users(id: int, update_items: update_items):
-
-    if id not in _GAMES_STORAGE:
-        raise ValueError(f"No game with id {id}")
-    elif (_GAMES_STORAGE[id].player_id_1 != "" and _GAMES_STORAGE[id].player_id_2 != ""):
-        raise ValueError(f"game with id {id}  is full")
-
-    else:
-        if update_items.player_id_1 != None:
-            _GAMES_STORAGE[id].player_id_1 = update_items.player_id_1
-        if update_items.player_id_2 != None:
-            _GAMES_STORAGE[id].player_id_2 = update_items.player_id_2
-        return _GAMES_STORAGE[id]
+#     _GAMES_STORAGE[id] = data
