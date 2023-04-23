@@ -19,12 +19,27 @@ app = FastAPI()
 _GAMES_STORAGE = {
     1: {
         "id": 1,
-        "player_id_1": "",
-        "player_id_2": "",
+        "player_id_1": "A",
+        "player_id_2": "B",
         "status": "new",
         "current_move": "x",
-        "player_score_1": 0,
-        "player_score_2": 0,
+        "player_score_1": 10,
+        "player_score_2": 5,
+        "field": [
+            ["", "", ""],
+            ["", "", ""],
+            ["", "", ""],
+        ],
+    },
+
+    2: {
+        "id": 2,
+        "player_id_1": "A",
+        "player_id_2": "B",
+        "status": "new",
+        "current_move": "x",
+        "player_score_1": 10,
+        "player_score_2": 5,
         "field": [
             ["", "", ""],
             ["", "", ""],
@@ -288,4 +303,4 @@ async def make_move(game_id: int, move: schemas.Move):
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
