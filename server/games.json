@@ -1,0 +1,50 @@
+{
+    "1": {
+        "id": 1,
+        "status": "started",
+        "last_move_player_id": "1",
+        "field": [
+            [
+                null,
+                null,
+                null
+            ],
+            [
+                null,
+                "x",
+                null
+            ],
+            [
+                null,
+                null,
+                null
+            ]
+        ],
+        "player_x": "1",
+        "player_o": "2"
+    },
+    "2": {
+        "id": 2,
+        "status": "new",
+        "last_move_player_id": null,
+        "field": [
+            [
+                null,
+                null,
+                null
+            ],
+            [
+                null,
+                null,
+                null
+            ],
+            [
+                null,
+                null,
+                null
+            ]
+        ],
+        "player_x": "1",
+        "player_o": "2"
+    }
+}
