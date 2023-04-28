@@ -1,0 +1,1 @@
+{"players": {"1": {"player_id": 1, "score": 2}, "2": {"player_id": 2, "score": 0}}, "games": {"1": {"id": 1, "player_x": 1, "player_o": 2, "status": "finished", "current_move": "o", "field": [["x", "o", "x"], ["x", "o", ""], ["x", "", "o"]], "winner": "x"}}}
