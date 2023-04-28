@@ -1,3 +1,4 @@
+from typing import Union
 from fastapi import FastAPI
 from fastapi import HTTPException
 
@@ -13,12 +14,40 @@ async def list_games():
     return {
         "games": storage.get_games(),
     }
-
+@app.post("/register-player/")
+async def register_player(player_name: str) -> dict:
+    player_id = storage.register_player(player_name)
+    return {"player_id": player_id}
 
 @app.post("/create-game/")
-async def create_game():
-    return storage.create_game()
+def create_game(player_id: int) -> dict:
+    game = storage.create_game(player_id)
+    game["score_x"] = 0
+    game["score_o"] = 0
+    storage.update_game(game["id"], game)
+    return game
 
+
+@app.post("/join-game/")
+def join_game(game_id: int, player_id: int) -> dict:
+    game = storage.get_game(game_id)
+    if not game:
+        return {"error": "Game not found"}
+    
+    if game["status"] == "started":
+        return {"error": "Game has already started"}
+    
+    if game["status"] == "finished":
+        return {"error": "Game has already finished"}
+    
+    if game.get("player_o"):
+        return {"error": "Game is full"}
+    
+    game["player_o"] = player_id
+    game["status"] = "started"
+    storage.update_game(game_id, game)
+    
+    return game
 
 def check_winner(game: dict) -> str | None:
     """
@@ -65,14 +94,14 @@ def check_winner(game: dict) -> str | None:
 
 
 @app.post("/game/{game_id}/move/")
-async def make_move(game_id: int, move: schemas.Move):
+async def make_move(game_id: int, move: schemas.Move, player_id: int) -> dict:
     game = storage.get_game(game_id)
 
     if game is None:
         raise HTTPException(status_code=404, detail="Game not found")
 
-    if game["status"] != "new":
-        raise HTTPException(status_code=400, detail="Game is not new")
+    if game["status"] != "started":
+        raise HTTPException(status_code=400, detail="Game is not started")
 
     if game["field"][move.row][move.col] is not None:
         raise HTTPException(status_code=400, detail="Cell is not empty")
@@ -85,13 +114,28 @@ async def make_move(game_id: int, move: schemas.Move):
 
     winner = check_winner(game)
 
+    if winner is not None:
+        game["status"] = "finished"
+        if winner == "x":
+            game["score_x"] += 1
+        elif winner == "o":
+            game["score_o"] += 1
+        elif winner == "draft":
+            game["score_x"] += 0.5
+            game["score_o"] += 0.5
+
     storage.update_game(game_id, game)
 
     resp = {"status": "ok"}
     if winner is not None:
         resp["winner"] = winner
-
     return resp
+
+@app.get("/scores/")
+async def get_scores():
+    players = storage.get_players()
+    sorted_players = sorted(players, key=lambda p: p["score"], reverse=True)
+    return {"players": sorted_players}
 
 
 if __name__ == "__main__":

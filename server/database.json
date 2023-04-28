@@ -1,0 +1,66 @@
+{
+    "players": {
+        "1": {
+            "name": "A",
+            "id": 1
+        },
+        "2": {
+            "name": "B",
+            "id": 2
+        }
+    },
+    "games": {
+        "1": {
+            "status": "finished",
+            "current_move": "o",
+            "player_x": 1,
+            "player_o": 2,
+            "field": [
+                [
+                    "x",
+                    "x",
+                    "x"
+                ],
+                [
+                    "o",
+                    "o",
+                    null
+                ],
+                [
+                    null,
+                    null,
+                    null
+                ]
+            ],
+            "id": 1,
+            "score_x": 1,
+            "score_o": 0
+        },
+        "2": {
+            "status": "finished",
+            "current_move": "o",
+            "player_x": 2,
+            "player_o": 1,
+            "field": [
+                [
+                    "x",
+                    "o",
+                    "o"
+                ],
+                [
+                    "o",
+                    null,
+                    null
+                ],
+                [
+                    "x",
+                    "x",
+                    "x"
+                ]
+            ],
+            "id": 2,
+            "score_x": 1,
+            "score_o": 0
+        }
+    }
+}
