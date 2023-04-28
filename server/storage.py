@@ -1,47 +1,63 @@
 import copy
+from typing import Dict, List, Optional
 
-_GAMES_STORAGE = {
-    1: {
-        "id": 1,
+from tinydb import TinyDB, Query
+
+db = TinyDB('database.json')
+
+games_table = db.table('games')
+players_table = db.table('players')
+
+def get_games() -> List[Dict]:
+    return games_table.all()
+
+
+def create_game(player_id: int) -> Dict:
+    game_data = {
         "status": "new",
         "current_move": "x",
-        "field": [
-            [None, None, None],
-            [None, None, None],
-            [None, None, None],
-        ],
-    },
-}
-
-
-def get_games():
-    return list(_GAMES_STORAGE.values())
-
-
-def create_game():
-    id_ = len(_GAMES_STORAGE) + 1
-
-    _GAMES_STORAGE[id_] = {
-        "id": id_,
-        "status": "new",
-        "current_move": "x",
+        "player_x": player_id,
+        "player_o": None,
         "field": [
             [None, None, None],
             [None, None, None],
             [None, None, None],
         ],
     }
+    game_id = games_table.insert(game_data)
+    game_data['id'] = game_id
+    games_table.update(game_data, doc_ids=[game_id])
+    return game_data
 
-    return _GAMES_STORAGE[id_]
 
-
-def get_game(id: int) -> dict | None:
-    game = _GAMES_STORAGE.get(id)
+def get_game(id: int) -> Optional[Dict]:
+    game = games_table.get(doc_id=id)
     return copy.deepcopy(game)
 
 
-def update_game(id: int, data: dict):
-    if id not in _GAMES_STORAGE:
-        raise ValueError(f"No game with id {id}")
+def update_game(id: int, data: Dict):
+    games_table.update(data, doc_ids=[id])
 
-    _GAMES_STORAGE[id] = data
+def create_player(name: str) -> Dict:
+    player_data = {
+        "name": name,
+    }
+    player_id = players_table.insert(player_data)
+    player_data['id'] = player_id
+    players_table.update(player_data, doc_ids=[player_id])
+    return player_data
+
+
+def get_player(id: int) -> Optional[Dict]:
+    Player = Query()
+    player = players_table.get(Player.id == id)
+    return copy.deepcopy(player) if player else None
+
+
+
+def update_player(id: int, data: Dict):
+    players_table.update(data, doc_ids=[id])
+    
+def register_player(name: str) -> Dict:
+    player_data = create_player(name)
+    return player_data
